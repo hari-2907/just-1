@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t simple-python-app .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh '''
+                docker rm -f simple_python_container || true
+                docker run --name simple_python_container simple-python-app
+                '''
+            }
+        }
+    }
+}
